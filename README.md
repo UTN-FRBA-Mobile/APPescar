@@ -5,7 +5,7 @@ Notamos que son pocos los lugares de donde obtener información acerca de dónde
 Algunos utilizan revistas, otros foros, otros mediante el boca a boca. La idea es ofrecer una herramienta que con esta información de manera cómoda, para aquel que planea su viaje, estando en viaje o incluso en locación.
 
 ## Detalle
-El flujo de la aplicación transcurre en 2 actividades principales:
+El flujo de la aplicación transcurre en tres actividades principales:
 - La primera es la del mapa, en esta actividad el usuario podrá ver el mapa de la región donde se encuentra ubicado con todos los marcadores de pesca de la temporada actual. Al seleccionar un marcador podrá visualizarse los detalles de esa pesca en particular, foto si la hubiera, carnada utilizada, tipos de anzuelo, línea de fondo o de flote, etc. y algún comentario que pudo realizar el pescador. En esta interfaz abajo a la derecha en un botón flotante “+” se podrá acceder a la interfaz de carga de una pesca.
 - Interfaz de carga de una pesca: En esta interfaz se detectará automáticamente la ubicación del dispositivo, y se ofrecerá la opción de tomar una foto de la pieza, además de carga de otros datos relacionados a la pesca que se mencionaron en el punto anterior.
 - Historial: Un botón flotante abajo a la izquierda en la pantalla principal permite acceder a un historial del usuario, donde puede visualizar todas las pescas cargadas.
