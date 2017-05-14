@@ -16,6 +16,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
+import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -24,6 +25,11 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+
+import java.util.Arrays;
 
 public class MapsActivity extends AppCompatActivity
         implements
@@ -47,6 +53,12 @@ public class MapsActivity extends AppCompatActivity
 
     private GoogleMap mMap;
 
+
+    private static final String TAG = MapsActivity.class.getSimpleName();
+    private static final String PATH_TOS = "";
+    private FirebaseAuth auth;
+    private static final int RC_SIGN_IN = 200;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,6 +67,26 @@ public class MapsActivity extends AppCompatActivity
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        if (auth.getCurrentUser() != null) {
+            // already signed in
+            this.displayMessage(auth.getCurrentUser().getEmail());
+        } else {
+
+            startActivityForResult(
+                    AuthUI.getInstance()
+                            .createSignInIntentBuilder()
+                            .setProviders(Arrays.asList(
+                                    new AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build()
+                                    )).build(),
+                    RC_SIGN_IN);
+
+          /*  startActivityForResult(
+                    // Get an instance of AuthUI based on the default app
+                    AuthUI.getInstance().createSignInIntentBuilder().build(),
+                    RC_SIGN_IN); */
+        }
     }
 
 
@@ -158,5 +190,10 @@ public class MapsActivity extends AppCompatActivity
     @Override
     public void onProviderDisabled(String provider) {
 
+    }
+
+
+    private void displayMessage(String message){
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
 }
