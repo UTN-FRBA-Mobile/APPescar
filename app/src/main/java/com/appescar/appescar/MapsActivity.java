@@ -5,15 +5,27 @@ package com.appescar.appescar;
  */
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
@@ -22,6 +34,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -33,6 +46,7 @@ import java.util.Arrays;
 
 public class MapsActivity extends AppCompatActivity
         implements
+        NavigationView.OnNavigationItemSelectedListener,
         OnMapReadyCallback,
         GoogleMap.OnMyLocationButtonClickListener,
         ActivityCompat.OnRequestPermissionsResultCallback,
@@ -59,11 +73,18 @@ public class MapsActivity extends AppCompatActivity
     private FirebaseAuth auth;
     private static final int RC_SIGN_IN = 200;
 
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+       // setSupportActionBar(toolbar);
+
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -87,6 +108,118 @@ public class MapsActivity extends AppCompatActivity
                     AuthUI.getInstance().createSignInIntentBuilder().build(),
                     RC_SIGN_IN); */
         }
+
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                /*
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+                */
+                Intent intent = new Intent(MapsActivity.this, FormAdd.class);
+                startActivity(intent);
+            }
+        });
+
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.setDrawerListener(toggle);
+        toggle.syncState();
+/*
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+*/
+
+
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            this.displayMessage("Deslogueando usuario");
+            AuthUI.getInstance()
+                    .signOut(this)
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        public void onComplete(@NonNull Task<Void> task) {
+                            // user is now signed out
+                           // startActivity(new Intent(MyActivity.this, SignInActivity.class));
+                           // finish();
+                        }
+                    });
+
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @SuppressWarnings("StatementWithEmptyBody")
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+
+        Fragment fragment = null;
+        Boolean FragmentoSeleccionado=false;
+
+
+
+        if (id == R.id.nav_camera) {
+            // Handle the camera action
+
+            //fragment = new MapaFragment();
+            //FragmentoSeleccionado=true;
+
+        } else if (id == R.id.nav_gallery) {
+
+            //fragment = new MisPescasFragment();
+            //FragmentoSeleccionado=true;
+
+        } else if (id == R.id.nav_slideshow) {
+
+        } else if (id == R.id.nav_manage) {
+
+        } else if (id == R.id.nav_share) {
+
+        } else if (id == R.id.nav_send) {
+
+        }
+
+        if (FragmentoSeleccionado) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.Contenedor, fragment).commit();
+        }
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
     }
 
 
@@ -107,9 +240,58 @@ public class MapsActivity extends AppCompatActivity
         enableMyLocation();
 
         // Add a marker in Sydney and move the camera
-        LatLng chascomus = new LatLng(-35.5860007, -58.0839176);
-        mMap.addMarker(new MarkerOptions().position(chascomus).title("Laguna de Chascomús"));
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(chascomus, 7.0f));
+        LatLng chascomus = new LatLng(-35.582637,-58.062126);
+        mMap.addMarker(
+                    new MarkerOptions()
+                                .position(chascomus)
+                                .title("Laguna de Chascomús")
+                                .snippet("Mi lugar favorito de pesca"));
+
+        mMap.addMarker(
+                new MarkerOptions()
+                        .position(new LatLng(-35.59,-58.06126))
+                        .title("roberto@gmail.com")
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.pesca1))
+        );
+
+        mMap.addMarker(
+                new MarkerOptions()
+                        .position(new LatLng(-35.588796, -58.064564))
+                        .title("juancarlos@gmail.com")
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.pesca2))
+        );
+
+
+        mMap.addMarker(
+                new MarkerOptions()
+                        .position(new LatLng(-35.587533, -58.064457))
+                        .title("juan@bigfoot.com")
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.pesca3))
+        );
+
+        mMap.addMarker(
+                new MarkerOptions()
+                        .position(new LatLng(-35.583557, -58.062304))
+                        .title("fernando@hotmail.com")
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.pesca4))
+        );
+
+        mMap.addMarker(
+                new MarkerOptions()
+                        .position(new LatLng(-35.585309, -58.061294))
+                        .title("sebastian@yahoo.com")
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.pesca5))
+        );
+
+        mMap.addMarker(
+                new MarkerOptions()
+                        .position(new LatLng(-35.584755, -58.063649))
+                        .title("pepe@gmail.com")
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.pesca6))
+        );
+
+
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(chascomus, 15.0f));
     }
 
     /**
@@ -196,4 +378,6 @@ public class MapsActivity extends AppCompatActivity
     private void displayMessage(String message){
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
+
+
 }
