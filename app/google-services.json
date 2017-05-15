@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "772787951110",
+    "firebase_url": "https://appescar-47304.firebaseio.com",
+    "project_id": "appescar-47304",
+    "storage_bucket": "appescar-47304.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:772787951110:android:218e7a5eab7821da",
+        "android_client_info": {
+          "package_name": "com.appescar.appescar"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "772787951110-n5thre2ckogan4a1586hrsu9rnr8e9v5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAcTgbgeRVlkoM8CJqLmD_RdEND6SuyQQQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

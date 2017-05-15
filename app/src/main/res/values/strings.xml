@@ -4,4 +4,6 @@
     <string name="location_permission_denied" >location_permission_denied</string>
     <string name="permission_required_toast" >permission_required_toast</string>
     <string name="permission_rationale_location" >permission_rationale_location</string>
+    <string name="facebook_application_id" translatable="false">1124968610941049</string>
+    <string name="facebook_login_protocol_scheme" translatable="false">fb1124968610941049</string>
 </resources>
