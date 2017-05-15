@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="tipopezlist">
+        <item>@string/tipopez1</item>
+        <item>@string/tipopez2</item>
+        <item>@string/tipopez3</item>
+        <item>@string/tipopez4</item>
+        <item>@string/tipopez5</item>
+        <item>@string/tipopez6</item>
+        <item>@string/tipopez7</item>
+        <item>@string/tipopez8</item>
+        <item>@string/tipopez9</item>
+        <item>@string/tipopez10</item>
+        <item>@string/tipopez11</item>
+        <item>@string/tipopez12</item>
+        <item>@string/tipopez13</item>
+        <item>@string/tipopez14</item>
+        <item>@string/tipopez15</item>
+        <item>@string/tipopez16</item>
+        <item>@string/tipopez17</item>
+        <item>@string/tipopez18</item>
+        <item>@string/tipopez19</item>
+        <item>@string/tipopez20</item>
+        <item>@string/tipopez21</item>
+        <item>@string/tipopez22</item>
+        <item>@string/tipopez23</item>
+        <item>@string/tipopez24</item>
+        <item>@string/tipopez25</item>
+        <item>@string/tipopez26</item>
+        <item>@string/tipopez27</item>
+        <item>@string/tipopez28</item>
+        <item>@string/tipopez29</item>
+        <item>@string/tipopez30</item>
+        <item>@string/tipopez31</item>
+        <item>@string/tipopez32</item>
+        <item>@string/tipopez33</item>
+        <item>@string/tipopez34</item>
+    </string-array>
+    <string-array name="tipolinealist">
+        <item>@string/tipolinea1</item>
+        <item>@string/tipolinea2</item>
+    </string-array>
+    <string-array name="tipocarnadalist">
+        <item>@string/tipocarnada1</item>
+        <item>@string/tipocarnada2</item>
+        <item>@string/tipocarnada3</item>
+        <item>@string/tipocarnada4</item>
+    </string-array>
+</resources>
