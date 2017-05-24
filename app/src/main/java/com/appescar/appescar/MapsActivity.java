@@ -83,7 +83,7 @@ public class MapsActivity extends AppCompatActivity
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-       // setSupportActionBar(toolbar);
+        setSupportActionBar(toolbar);
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -125,7 +125,7 @@ public class MapsActivity extends AppCompatActivity
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+                MapsActivity.this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 /*
