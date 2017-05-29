@@ -1,9 +1,66 @@
 <resources>
     <string name="app_name">APPescar</string>
     <string name="title_activity_maps">APPescar</string>
-    <string name="location_permission_denied" >location_permission_denied</string>
-    <string name="permission_required_toast" >permission_required_toast</string>
-    <string name="permission_rationale_location" >permission_rationale_location</string>
+    <string name="location_permission_denied">location_permission_denied</string>
+    <string name="permission_required_toast">permission_required_toast</string>
+    <string name="permission_rationale_location">permission_rationale_location</string>
     <string name="facebook_application_id" translatable="false">1124968610941049</string>
     <string name="facebook_login_protocol_scheme" translatable="false">fb1124968610941049</string>
+
+    <string name="navigation_drawer_open">Abrir Panel Lateral</string>
+    <string name="navigation_drawer_close">Cerrar Panel Lateral</string>
+
+
+    <string name="action_settings">Desloguearse</string>
+
+    <string name="agregar_pesca">Agregar Pesca</string>
+    <string name="descripcion">Descripción</string>
+    <string name="tipopez_seleccionar">Tipo de Pez</string>
+    <string name="tipolinea_seleccionar">Tipo de Linea</string>
+    <string name="tipocarnada_seleccionar">Tipo de Carnada</string>
+
+    <string name="tipocarnada1">Viva</string>
+    <string name="tipocarnada2">Masa</string>
+    <string name="tipocarnada3">Mosca</string>
+    <string name="tipocarnada4">Señuelo</string>
+
+    <string name="tipolinea1">Fondo</string>
+    <string name="tipolinea2">Flote</string>
+
+    <string name="tipopez1">ARMADO</string>
+    <string name="tipopez2">BAGRE AMARILLO</string>
+    <string name="tipopez3">BAGRE BLANCO O MONCHOLO</string>
+    <string name="tipopez4">BOGA</string>
+    <string name="tipopez5">CABEZA AMARGA</string>
+    <string name="tipopez6">CHAFALOTE</string>
+    <string name="tipopez7">DIENTUDO O BOCACHA</string>
+    <string name="tipopez8">DORADO</string>
+    <string name="tipopez9">LISA</string>
+    <string name="tipopez10">MANGURUYÚ</string>
+    <string name="tipopez11">PACÚ</string>
+    <string name="tipopez12">PALOMETA</string>
+    <string name="tipopez13">PATÍ</string>
+    <string name="tipopez14">PEJERREY</string>
+    <string name="tipopez15">PERCA</string>
+    <string name="tipopez16">PIRÁ PITÁ O PICO PATO</string>
+    <string name="tipopez17">PIRAÑA</string>
+    <string name="tipopez18">RAYA</string>
+    <string name="tipopez19">SURUBÍ</string>
+    <string name="tipopez20">TARARIRA</string>
+    <string name="tipopez21">CARPA</string>
+    <string name="tipopez22">SABALO</string>
+    <string name="tipopez23">MOJARRA</string>
+    <string name="tipopez24">MANDUBÍ</string>
+    <string name="tipopez25">MANDUBA</string>
+    <string name="tipopez26">CORVINA</string>
+    <string name="tipopez27">ANGUILA</string>
+    <string name="tipopez28">VIEJA DEL AGUA</string>
+    <string name="tipopez29">LIMON</string>
+    <string name="tipopez30">PALO</string>
+    <string name="tipopez31">CONGRIO</string>
+    <string name="tipopez32">PESCADILLA</string>
+    <string name="tipopez33">CHUCHO</string>
+    <string name="tipopez34">BROTOLA</string>
+    <string name="title_activity_form_add2">FormAdd2</string>
+
 </resources>
