@@ -12,10 +12,8 @@ import android.location.LocationListener;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
@@ -29,18 +27,21 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Arrays;
 
@@ -52,29 +53,13 @@ public class MapsActivity extends AppCompatActivity
         ActivityCompat.OnRequestPermissionsResultCallback,
         LocationListener {
 
-    /**
-     * Request code for location permission request.
-     *
-     * @see #onRequestPermissionsResult(int, String[], int[])
-     */
-    private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
-
-    /**
-     * Flag indicating whether a requested permission has been denied after returning in
-     * {@link #onRequestPermissionsResult(int, String[], int[])}.
-     */
-    private boolean mPermissionDenied = false;
-
     private GoogleMap mMap;
 
+    private DatabaseReference refDatabase;
 
-    private static final String TAG = MapsActivity.class.getSimpleName();
-    private static final String PATH_TOS = "";
-    private FirebaseAuth auth;
+    private boolean mPermissionDenied = false;
+    private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     private static final int RC_SIGN_IN = 200;
-
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -132,8 +117,7 @@ public class MapsActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 */
-
-
+        refDatabase = FirebaseDatabase.getInstance().getReference().child("pescas");
     }
 
 
@@ -239,59 +223,90 @@ public class MapsActivity extends AppCompatActivity
         mMap.setOnMyLocationButtonClickListener(this);
         enableMyLocation();
 
-        // Add a marker in Sydney and move the camera
+//        // Add a marker in Sydney and move the camera
         LatLng chascomus = new LatLng(-35.582637,-58.062126);
-        mMap.addMarker(
-                    new MarkerOptions()
-                                .position(chascomus)
-                                .title("Laguna de Chascomús")
-                                .snippet("Mi lugar favorito de pesca"));
+//        mMap.addMarker(
+//                    new MarkerOptions()
+//                                .position(chascomus)
+//                                .title("Laguna de Chascomús")
+//                                .snippet("Mi lugar favorito de pesca"));
+//
+//        mMap.addMarker(
+//                new MarkerOptions()
+//                        .position(new LatLng(-35.59,-58.06126))
+//                        .title("roberto@gmail.com")
+//                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.pesca1))
+//        );
+//
+//        mMap.addMarker(
+//                new MarkerOptions()
+//                        .position(new LatLng(-35.588796, -58.064564))
+//                        .title("juancarlos@gmail.com")
+//                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.pesca2))
+//        );
+//
+//
+//        mMap.addMarker(
+//                new MarkerOptions()
+//                        .position(new LatLng(-35.587533, -58.064457))
+//                        .title("juan@bigfoot.com")
+//                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.pesca3))
+//        );
+//
+//        mMap.addMarker(
+//                new MarkerOptions()
+//                        .position(new LatLng(-35.583557, -58.062304))
+//                        .title("fernando@hotmail.com")
+//                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.pesca4))
+//        );
+//
+//        mMap.addMarker(
+//                new MarkerOptions()
+//                        .position(new LatLng(-35.585309, -58.061294))
+//                        .title("sebastian@yahoo.com")
+//                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.pesca5))
+//        );
+//
+//        mMap.addMarker(
+//                new MarkerOptions()
+//                        .position(new LatLng(-35.584755, -58.063649))
+//                        .title("pepe@gmail.com")
+//                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.pesca6))
+//        );
+//
+//
+//        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(chascomus, 15.0f));
 
-        mMap.addMarker(
-                new MarkerOptions()
-                        .position(new LatLng(-35.59,-58.06126))
-                        .title("roberto@gmail.com")
-                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.pesca1))
-        );
 
-        mMap.addMarker(
-                new MarkerOptions()
-                        .position(new LatLng(-35.588796, -58.064564))
-                        .title("juancarlos@gmail.com")
-                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.pesca2))
-        );
+        refDatabase.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String prevChildKey) {
+                LatLng newLocation = new LatLng(
+                        dataSnapshot.child("lat").getValue(Double.class),
+                        dataSnapshot.child("lng").getValue(Double.class)
+                );
+                mMap.addMarker(new MarkerOptions()
+                        .position(newLocation)
+                        .title(dataSnapshot.getKey()));
+            }
 
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String prevChildKey) {}
 
-        mMap.addMarker(
-                new MarkerOptions()
-                        .position(new LatLng(-35.587533, -58.064457))
-                        .title("juan@bigfoot.com")
-                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.pesca3))
-        );
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {}
 
-        mMap.addMarker(
-                new MarkerOptions()
-                        .position(new LatLng(-35.583557, -58.062304))
-                        .title("fernando@hotmail.com")
-                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.pesca4))
-        );
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String prevChildKey) {}
 
-        mMap.addMarker(
-                new MarkerOptions()
-                        .position(new LatLng(-35.585309, -58.061294))
-                        .title("sebastian@yahoo.com")
-                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.pesca5))
-        );
-
-        mMap.addMarker(
-                new MarkerOptions()
-                        .position(new LatLng(-35.584755, -58.063649))
-                        .title("pepe@gmail.com")
-                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.pesca6))
-        );
-
+            @Override
+            public void onCancelled(DatabaseError databaseError) {}
+        });
 
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(chascomus, 15.0f));
+
+
+
     }
 
     /**

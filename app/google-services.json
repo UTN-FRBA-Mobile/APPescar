@@ -1,27 +1,35 @@
 {
   "project_info": {
-    "project_number": "772787951110",
-    "firebase_url": "https://appescar-47304.firebaseio.com",
-    "project_id": "appescar-47304",
-    "storage_bucket": "appescar-47304.appspot.com"
+    "project_number": "116437170958",
+    "firebase_url": "https://apppescar-e204f.firebaseio.com",
+    "project_id": "apppescar-e204f",
+    "storage_bucket": "apppescar-e204f.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:772787951110:android:218e7a5eab7821da",
+        "mobilesdk_app_id": "1:116437170958:android:218e7a5eab7821da",
         "android_client_info": {
           "package_name": "com.appescar.appescar"
         }
       },
       "oauth_client": [
         {
-          "client_id": "772787951110-n5thre2ckogan4a1586hrsu9rnr8e9v5.apps.googleusercontent.com",
+          "client_id": "116437170958-2meiapls3fl6s444nul9ss75jsa7djrj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.appescar.appescar",
+            "certificate_hash": "729ab7845242a4b322d18c3e90d090e7985b5bee"
+          }
+        },
+        {
+          "client_id": "116437170958-0jmesd64ee75lo839a3sef3pfk0l23gm.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAcTgbgeRVlkoM8CJqLmD_RdEND6SuyQQQ"
+          "current_key": "AIzaSyARcJeXGNbkyn6GxBqWmOknaMRjrBzqYBE"
         }
       ],
       "services": {
@@ -29,8 +37,13 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "116437170958-0jmesd64ee75lo839a3sef3pfk0l23gm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
           "status": 2
