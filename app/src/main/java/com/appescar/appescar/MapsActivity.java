@@ -287,7 +287,9 @@ public class MapsActivity extends AppCompatActivity
                 );
                 mMap.addMarker(new MarkerOptions()
                         .position(newLocation)
-                        .title(dataSnapshot.getKey()));
+                        .title(dataSnapshot.child("fish").getValue(String.class))
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.pesca5))
+                        .snippet(dataSnapshot.child("description").getValue(String.class)));
             }
 
             @Override
