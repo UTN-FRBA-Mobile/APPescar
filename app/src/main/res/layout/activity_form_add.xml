@@ -7,6 +7,7 @@
         android:id="@+id/FormAddTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_margin="20dp"
         android:text="@string/agregar_pesca"
         android:textSize="10pt">
     </TextView>
@@ -14,29 +15,44 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="@string/tipopez_seleccionar"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="2dp"
         />
     <Spinner
         android:id="@+id/FormAddTipoPez"
         android:layout_height="wrap_content"
         android:prompt="@string/tipopez_seleccionar"
         android:layout_width="fill_parent"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:entries="@array/tipopezlist">
     </Spinner>
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="@string/tipolinea_seleccionar"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="2dp"
+        android:layout_marginTop="10dp"
         />
     <Spinner
         android:id="@+id/FormAddTipoLinea"
         android:layout_height="wrap_content"
         android:prompt="@string/tipolinea_seleccionar"
         android:layout_width="fill_parent"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:entries="@array/tipolinealist">
     </Spinner>
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="2dp"
+        android:layout_marginTop="10dp"
         android:text="@string/tipocarnada_seleccionar"
         />
     <Spinner
@@ -44,35 +60,51 @@
         android:layout_height="wrap_content"
         android:prompt="@string/tipocarnada_seleccionar"
         android:layout_width="fill_parent"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:entries="@array/tipocarnadalist">
     </Spinner>
-
-    <EditText
-        android:id="@+id/FormAddDescripcion"
-        android:layout_height="wrap_content"
-        android:hint="@string/descripcion"
-        android:inputType="textMultiLine"
-        android:lines="3"
-        android:layout_width="fill_parent">
-    </EditText>
 
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="2dp"
+        android:layout_marginTop="10dp"
         android:text="@string/select_image"
         />
     <ImageView
         android:id="@+id/imageUploadPreview"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1">
-        </ImageView>
+        android:layout_weight="1"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp">
+    </ImageView>
     <Button
         android:id="@+id/uploadImageButton"
         android:text="@string/pick_photo"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp">
     </Button>
+
+    <EditText
+        android:id="@+id/FormAddDescripcion"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="2dp"
+        android:layout_marginTop="10dp"
+        android:hint="@string/descripcion"
+        android:inputType="textMultiLine"
+        android:lines="3"
+        android:maxLength="255"
+        android:gravity="top"
+        android:layout_width="fill_parent">
+    </EditText>
 
     <Button
         android:id="@+id/FormAddSaveButton"
