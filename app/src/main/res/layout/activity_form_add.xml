@@ -44,6 +44,24 @@
         android:layout_width="fill_parent">
     </EditText>
 
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/select_image"
+        />
+    <ImageView
+        android:id="@+id/imageUploadPreview"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
+        </ImageView>
+    <Button
+        android:id="@+id/uploadImageButton"
+        android:text="@string/pick_photo"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+    </Button>
+
     <Button
         android:id="@+id/FormAddSaveButton"
         android:layout_height="wrap_content"
