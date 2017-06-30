@@ -44,4 +44,10 @@
         android:layout_width="fill_parent">
     </EditText>
 
+    <Button
+        android:id="@+id/FormAddSaveButton"
+        android:layout_height="wrap_content"
+        android:text="@string/save_button"
+        ></Button>
+
 </LinearLayout>

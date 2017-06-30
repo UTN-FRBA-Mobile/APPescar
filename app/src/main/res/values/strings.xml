@@ -63,4 +63,6 @@
     <string name="tipopez34">Brotola</string>
     <string name="title_activity_form_add2">FormAdd2</string>
 
+    <string name="save_button">Guardar</string>
+
 </resources>
