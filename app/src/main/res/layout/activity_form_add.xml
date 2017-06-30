@@ -10,7 +10,11 @@
         android:text="@string/agregar_pesca"
         android:textSize="10pt">
     </TextView>
-
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/tipopez_seleccionar"
+        />
     <Spinner
         android:id="@+id/FormAddTipoPez"
         android:layout_height="wrap_content"
@@ -18,7 +22,11 @@
         android:layout_width="fill_parent"
         android:entries="@array/tipopezlist">
     </Spinner>
-
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/tipolinea_seleccionar"
+        />
     <Spinner
         android:id="@+id/FormAddTipoLinea"
         android:layout_height="wrap_content"
@@ -26,7 +34,11 @@
         android:layout_width="fill_parent"
         android:entries="@array/tipolinealist">
     </Spinner>
-
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/tipocarnada_seleccionar"
+        />
     <Spinner
         android:id="@+id/FormAddTipoCarnada"
         android:layout_height="wrap_content"
@@ -65,6 +77,7 @@
     <Button
         android:id="@+id/FormAddSaveButton"
         android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
         android:text="@string/save_button"
         ></Button>
 
