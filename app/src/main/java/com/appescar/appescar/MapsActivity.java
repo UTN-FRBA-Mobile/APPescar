@@ -24,6 +24,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
@@ -33,6 +35,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -44,6 +47,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Arrays;
+import java.util.HashMap;
 
 public class MapsActivity extends AppCompatActivity
         implements
@@ -219,77 +223,57 @@ public class MapsActivity extends AppCompatActivity
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        final HashMap<String, Pesca> markers = new HashMap<>();
 
         mMap.setOnMyLocationButtonClickListener(this);
         enableMyLocation();
 
-//        // Add a marker in Sydney and move the camera
         LatLng chascomus = new LatLng(-35.582637,-58.062126);
-//        mMap.addMarker(
-//                    new MarkerOptions()
-//                                .position(chascomus)
-//                                .title("Laguna de Chascomús")
-//                                .snippet("Mi lugar favorito de pesca"));
-//
-//        mMap.addMarker(
-//                new MarkerOptions()
-//                        .position(new LatLng(-35.59,-58.06126))
-//                        .title("roberto@gmail.com")
-//                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.pesca1))
-//        );
-//
-//        mMap.addMarker(
-//                new MarkerOptions()
-//                        .position(new LatLng(-35.588796, -58.064564))
-//                        .title("juancarlos@gmail.com")
-//                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.pesca2))
-//        );
-//
-//
-//        mMap.addMarker(
-//                new MarkerOptions()
-//                        .position(new LatLng(-35.587533, -58.064457))
-//                        .title("juan@bigfoot.com")
-//                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.pesca3))
-//        );
-//
-//        mMap.addMarker(
-//                new MarkerOptions()
-//                        .position(new LatLng(-35.583557, -58.062304))
-//                        .title("fernando@hotmail.com")
-//                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.pesca4))
-//        );
-//
-//        mMap.addMarker(
-//                new MarkerOptions()
-//                        .position(new LatLng(-35.585309, -58.061294))
-//                        .title("sebastian@yahoo.com")
-//                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.pesca5))
-//        );
-//
-//        mMap.addMarker(
-//                new MarkerOptions()
-//                        .position(new LatLng(-35.584755, -58.063649))
-//                        .title("pepe@gmail.com")
-//                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.pesca6))
-//        );
-//
-//
-//        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(chascomus, 15.0f));
 
+        mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter(){
+
+
+            @Override
+            public View getInfoWindow(Marker marker) {
+                return null;
+            }
+
+            @Override
+            public View getInfoContents(Marker marker) {
+                View v = getLayoutInflater().inflate(R.layout.info_window, null);
+
+                ImageView catchPic = (ImageView) v.findViewById(R.id.catch_pic);
+                TextView fish = (TextView) v.findViewById(R.id.fish);
+                TextView bait = (TextView) v.findViewById(R.id.bait);
+                TextView line = (TextView) v.findViewById(R.id.line);
+                TextView description = (TextView) v.findViewById(R.id.description);
+
+                Pesca pesca = markers.get(marker.getSnippet());
+
+                // TODO: usar imagen en base64 real
+                catchPic.setImageResource(R.drawable.pesca1);
+                fish.setText(marker.getTitle());
+                bait.setText("Carnada: " + pesca.getBait());
+                line.setText("Linea: " + pesca.getLine());
+                description.setText("Detalle: " + pesca.getDescription());
+
+                return v;
+            }
+        });
 
         refDatabase.addChildEventListener(new ChildEventListener() {
             @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String prevChildKey) {
-                LatLng newLocation = new LatLng(
-                        dataSnapshot.child("lat").getValue(Double.class),
-                        dataSnapshot.child("lng").getValue(Double.class)
-                );
-                mMap.addMarker(new MarkerOptions()
+            public void onChildAdded(final DataSnapshot dataSnapshot, String prevChildKey) {
+                Pesca pesca = dataSnapshot.getValue(Pesca.class);
+                LatLng newLocation = new LatLng(pesca.getLat(), pesca.getLng());
+
+                MarkerOptions marker = new MarkerOptions()
                         .position(newLocation)
-                        .title(dataSnapshot.child("fish").getValue(String.class))
-                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.pesca5))
-                        .snippet(dataSnapshot.child("description").getValue(String.class)));
+                        .title(pesca.getFish())
+                        .snippet(dataSnapshot.getKey());
+
+                mMap.addMarker(marker);
+                markers.put(dataSnapshot.getKey(), pesca);
             }
 
             @Override
