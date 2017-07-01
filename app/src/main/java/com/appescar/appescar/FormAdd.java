@@ -10,7 +10,10 @@ import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
+
 import com.squareup.picasso.Picasso;
 import java.io.ByteArrayOutputStream;
 
@@ -42,7 +45,13 @@ public class FormAdd extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 ImageView imageUploadPreview = (ImageView) findViewById(R.id.imageUploadPreview);
+
                 String base64 = "";
+                String FormAddTipoPez = ((Spinner) findViewById(R.id.FormAddTipoPez)).getSelectedItem().toString();
+                String FormAddTipoLinea = ((Spinner) findViewById(R.id.FormAddTipoLinea)).getSelectedItem().toString();
+                String FormAddTipoCarnada = ((Spinner) findViewById(R.id.FormAddTipoCarnada)).getSelectedItem().toString();
+                String FormAddDescripcion = ((EditText) findViewById(R.id.FormAddDescripcion)).getText().toString();
+
                 if (imageUploadPreview != null && imageUploadPreview.getDrawable() != null) {
                     Bitmap bitmap = ((BitmapDrawable) imageUploadPreview.getDrawable()).getBitmap();
                     if (bitmap != null) {
@@ -52,7 +61,8 @@ public class FormAdd extends AppCompatActivity {
                         base64 = Base64.encodeToString(image, 0);
                     }
                 }
-                Log.d(base64, base64);
+
+
             }
 
         });
