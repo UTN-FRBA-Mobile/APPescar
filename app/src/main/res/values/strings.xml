@@ -63,4 +63,8 @@
     <string name="tipopez34">Brotola</string>
     <string name="title_activity_form_add2">FormAdd2</string>
 
+    <string name="save_button">Agregar</string>
+    <string name="select_image">Agregue una imagen del pez</string>
+    <string name="pick_photo">Seleccione una imagen</string>
+
 </resources>
