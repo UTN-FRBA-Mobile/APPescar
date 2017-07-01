@@ -7,19 +7,20 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
-
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
 import java.io.ByteArrayOutputStream;
 
 public class FormAdd extends AppCompatActivity {
 
     private static final int PICK_IMAGE = 1;
+    public DatabaseReference refDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +52,8 @@ public class FormAdd extends AppCompatActivity {
                 String FormAddTipoLinea = ((Spinner) findViewById(R.id.FormAddTipoLinea)).getSelectedItem().toString();
                 String FormAddTipoCarnada = ((Spinner) findViewById(R.id.FormAddTipoCarnada)).getSelectedItem().toString();
                 String FormAddDescripcion = ((EditText) findViewById(R.id.FormAddDescripcion)).getText().toString();
+                Double lat = new Double("1");
+                Double lng = new Double("1");
 
                 if (imageUploadPreview != null && imageUploadPreview.getDrawable() != null) {
                     Bitmap bitmap = ((BitmapDrawable) imageUploadPreview.getDrawable()).getBitmap();
@@ -62,7 +65,12 @@ public class FormAdd extends AppCompatActivity {
                     }
                 }
 
+                refDatabase = FirebaseDatabase.getInstance().getReference().child("pescas");
+                Pesca pesca = new Pesca(base64, FormAddTipoPez, FormAddTipoLinea, FormAddTipoCarnada, FormAddDescripcion, lat, lng);
+                String key = refDatabase.push().getKey();
+                refDatabase.child(key).setValue(pesca);
 
+                finish();
             }
 
         });
