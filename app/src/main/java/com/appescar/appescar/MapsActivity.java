@@ -253,9 +253,9 @@ public class MapsActivity extends AppCompatActivity
                 // TODO: usar imagen en base64 real
                 catchPic.setImageResource(R.drawable.pesca1);
                 fish.setText(marker.getTitle());
-                bait.setText("Carnada: " + pesca.getBait());
-                line.setText("Linea: " + pesca.getLine());
-                description.setText("Detalle: " + pesca.getDescription());
+                bait.setText(getString(R.string.carnada, pesca.getBait()));
+                line.setText(getString(R.string.linea, pesca.getLine()));
+                description.setText(getString(R.string.detalle, pesca.getDescription()));
 
                 return v;
             }

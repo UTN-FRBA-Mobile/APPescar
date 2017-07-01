@@ -67,4 +67,8 @@
     <string name="select_image">Agregue una imagen del pez</string>
     <string name="pick_photo">Seleccione una imagen</string>
 
+    <string name="carnada">Carnada: %s</string>
+    <string name="linea">Linea: %s</string>
+    <string name="detalle">Detalle: %s</string>
+
 </resources>
