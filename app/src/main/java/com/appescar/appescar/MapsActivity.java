@@ -7,6 +7,8 @@ package com.appescar.appescar;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.location.LocationListener;
 import android.support.annotation.NonNull;
@@ -21,6 +23,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -250,8 +253,9 @@ public class MapsActivity extends AppCompatActivity
 
                 Pesca pesca = markers.get(marker.getSnippet());
 
-                // TODO: usar imagen en base64 real
-                catchPic.setImageResource(R.drawable.pesca1);
+                byte[] decoded = Base64.decode(pesca.getImg(), Base64.DEFAULT);
+                Bitmap decodedByte = BitmapFactory.decodeByteArray(decoded, 0, decoded.length);
+                catchPic.setImageBitmap(decodedByte);
                 fish.setText(marker.getTitle());
                 bait.setText(getString(R.string.carnada, pesca.getBait()));
                 line.setText(getString(R.string.linea, pesca.getLine()));
@@ -290,8 +294,6 @@ public class MapsActivity extends AppCompatActivity
         });
 
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(chascomus, 15.0f));
-
-
 
     }
 
