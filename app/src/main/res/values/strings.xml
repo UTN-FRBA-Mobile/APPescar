@@ -70,5 +70,6 @@
     <string name="carnada">Carnada: %s</string>
     <string name="linea">Linea: %s</string>
     <string name="detalle">Detalle: %s</string>
+    <string name="title_activity_detalles_pesca">Informacion de la Pesca</string>
 
 </resources>

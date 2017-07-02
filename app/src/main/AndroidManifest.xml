@@ -41,12 +41,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".FormAdd"
             android:label="@string/title_activity_form_add2"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".DetallesPesca"
+            android:label="@string/title_activity_detalles_pesca"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

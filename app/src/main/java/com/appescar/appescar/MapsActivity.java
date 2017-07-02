@@ -5,6 +5,7 @@ package com.appescar.appescar;
  */
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -49,6 +50,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.Arrays;
 import java.util.HashMap;
 
@@ -234,8 +238,6 @@ public class MapsActivity extends AppCompatActivity
         LatLng chascomus = new LatLng(-35.582637,-58.062126);
 
         mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter(){
-
-
             @Override
             public View getInfoWindow(Marker marker) {
                 return null;
@@ -262,6 +264,34 @@ public class MapsActivity extends AppCompatActivity
                 description.setText(getString(R.string.detalle, pesca.getDescription()));
 
                 return v;
+            }
+        });
+
+        mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+            @Override
+            public void onInfoWindowClick(Marker marker) {
+                Intent intent = new Intent(MapsActivity.this, DetallesPesca.class);
+                Pesca pesca = markers.get(marker.getSnippet());
+                intent.putExtra("fish",pesca.getFish());
+                intent.putExtra("line",pesca.getLine());
+                intent.putExtra("bait",pesca.getBait());
+
+                byte[] decoded = Base64.decode(pesca.getImg(), Base64.DEFAULT);
+                Bitmap decodedByte = BitmapFactory.decodeByteArray(decoded, 0, decoded.length);
+                String fileName = "myImage";//no .png or .jpg needed
+                try {
+                    ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+                    decodedByte.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+                    FileOutputStream fo = openFileOutput(fileName, Context.MODE_PRIVATE);
+                    fo.write(bytes.toByteArray());
+                    // remember close file output
+                    fo.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                intent.putExtra("img",fileName);
+                intent.putExtra("description",pesca.getDescription());
+                startActivity(intent);
             }
         });
 
@@ -314,9 +344,7 @@ public class MapsActivity extends AppCompatActivity
 
     @Override
     public boolean onMyLocationButtonClick() {
-        Toast.makeText(this, "MyLocation button clicked", Toast.LENGTH_SHORT).show();
-        // Return false so that we don't consume the event and the default behavior still occurs
-        // (the camera animates to the user's current position).
+        Toast.makeText(this, "Detectando ubicacion...", Toast.LENGTH_SHORT).show();
         return false;
     }
 
