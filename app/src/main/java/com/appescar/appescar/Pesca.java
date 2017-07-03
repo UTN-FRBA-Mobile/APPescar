@@ -13,12 +13,13 @@ public class Pesca {
     public Double lat = new Double("0");
     public Double lng = new Double("0");
     public String uid = "";
+    public String tst = "";
 
     //Contructor default para deserealizar
     public Pesca() {
     }
 
-    public Pesca(String img, String fish, String line, String bait, String description, Double lat, Double lng, String uid ) {
+    public Pesca(String img, String fish, String line, String bait, String description, Double lat, Double lng, String uid, String tst ) {
         this.img = img;
         this.fish = fish;
         this.line = line;
@@ -27,6 +28,7 @@ public class Pesca {
         this.lat = lat;
         this.lng = lng;
         this.uid = uid;
+        this.tst = tst;
     }
 
     public String getImg() {
@@ -58,4 +60,6 @@ public class Pesca {
     }
 
     public String getUid() { return uid; }
+
+    public String getTst() { return tst; }
 }

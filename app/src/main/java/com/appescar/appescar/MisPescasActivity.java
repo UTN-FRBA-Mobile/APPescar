@@ -55,12 +55,14 @@ public class MisPescasActivity extends AppCompatActivity {
                 TextView line = (TextView) view.findViewById(R.id.lv_line);
                 TextView desc = (TextView) view.findViewById(R.id.lv_description);
                 ImageView img = (ImageView) view.findViewById(R.id.lv_list_image);
+                TextView tst = (TextView) view.findViewById(R.id.lv_timestamp);
 
 
                 fish.setText(pesca.getFish());
                 bait.setText(pesca.getBait());
                 line.setText(pesca.getLine());
                 desc.setText(pesca.getDescription());
+                tst.setText(pesca.getTst());
 
 
                 byte[] decoded = Base64.decode(pesca.getImg(), Base64.DEFAULT);
@@ -85,6 +87,7 @@ public class MisPescasActivity extends AppCompatActivity {
                 intent.putExtra("fish",pesca.getFish());
                 intent.putExtra("line",pesca.getLine());
                 intent.putExtra("bait",pesca.getBait());
+                intent.putExtra("tst",pesca.getTst());
 
                 byte[] decoded = Base64.decode(pesca.getImg(), Base64.DEFAULT);
                 Bitmap decodedByte = BitmapFactory.decodeByteArray(decoded, 0, decoded.length);

@@ -40,6 +40,9 @@ public class DetallesPesca extends AppCompatActivity {
         TextView description = (TextView) findViewById(R.id.DETAILS_description);
         description.setText(intent.getStringExtra("description"));
 
+        TextView timestamp = (TextView) findViewById(R.id.DETAILS_timestamp);
+        timestamp.setText(intent.getStringExtra("tst"));
+
         ImageView image = (ImageView) findViewById(R.id.DETAILS_img);
         Bitmap bitmap = null;
         try {

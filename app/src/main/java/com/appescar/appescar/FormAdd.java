@@ -25,6 +25,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class FormAdd extends AppCompatActivity {
 
@@ -94,7 +96,9 @@ public class FormAdd extends AppCompatActivity {
                 refDatabase = FirebaseDatabase.getInstance().getReference().child("pescas");
                 FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser() ;
 
-                Pesca pesca = new Pesca(base64, FormAddTipoPez, FormAddTipoLinea, FormAddTipoCarnada, FormAddDescripcion, lat, lng,  currentFirebaseUser.getUid());
+                Pesca pesca = new Pesca(base64, FormAddTipoPez, FormAddTipoLinea,
+                                        FormAddTipoCarnada, FormAddDescripcion, lat, lng,
+                                        currentFirebaseUser.getUid(), new SimpleDateFormat("yyyy.MM.dd HH.mm.ss").format(new Date()) );
                 String key = refDatabase.push().getKey();
                 refDatabase.child(key).setValue(pesca);
 

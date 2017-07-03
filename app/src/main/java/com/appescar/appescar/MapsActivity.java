@@ -292,6 +292,7 @@ public class MapsActivity extends AppCompatActivity
                 intent.putExtra("fish",pesca.getFish());
                 intent.putExtra("line",pesca.getLine());
                 intent.putExtra("bait",pesca.getBait());
+                intent.putExtra("tst",pesca.getTst());
 
                 byte[] decoded = Base64.decode(pesca.getImg(), Base64.DEFAULT);
                 Bitmap decodedByte = BitmapFactory.decodeByteArray(decoded, 0, decoded.length);
