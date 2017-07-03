@@ -66,6 +66,7 @@
     <string name="save_button">Agregar</string>
     <string name="select_image">Agregue una imagen del pez</string>
     <string name="pick_photo">Seleccione una imagen</string>
+    <string name="pick_camera">Tome una imagen</string>
 
     <string name="carnada">Carnada: %s</string>
     <string name="linea">Linea: %s</string>
