@@ -1,9 +1,14 @@
 package com.appescar.appescar;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
@@ -12,15 +17,21 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
+
 import java.io.ByteArrayOutputStream;
 
 public class FormAdd extends AppCompatActivity {
 
     private static final int PICK_IMAGE = 1;
     public DatabaseReference refDatabase;
+    private LocationManager mLocationManager;
+    private Location globallocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +40,7 @@ public class FormAdd extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        Button uploadImageButton = (Button)findViewById(R.id.uploadImageButton);
+        Button uploadImageButton = (Button) findViewById(R.id.uploadImageButton);
         uploadImageButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -40,6 +51,21 @@ public class FormAdd extends AppCompatActivity {
                 startActivityForResult(Intent.createChooser(intent, "@string/pick_photo"), PICK_IMAGE);
             }
         });
+
+        mLocationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 50, mLocationListener);
+
+
         Button FormAddSaveButton = (Button)findViewById(R.id.FormAddSaveButton);
         FormAddSaveButton.setOnClickListener(new View.OnClickListener() {
 
@@ -52,8 +78,8 @@ public class FormAdd extends AppCompatActivity {
                 String FormAddTipoLinea = ((Spinner) findViewById(R.id.FormAddTipoLinea)).getSelectedItem().toString();
                 String FormAddTipoCarnada = ((Spinner) findViewById(R.id.FormAddTipoCarnada)).getSelectedItem().toString();
                 String FormAddDescripcion = ((EditText) findViewById(R.id.FormAddDescripcion)).getText().toString();
-                Double lat = new Double("1");
-                Double lng = new Double("1");
+                Double lat = globallocation.getLatitude();
+                Double lng = globallocation.getLongitude();
 
                 if (imageUploadPreview != null && imageUploadPreview.getDrawable() != null) {
                     Bitmap bitmap = ((BitmapDrawable) imageUploadPreview.getDrawable()).getBitmap();
@@ -66,7 +92,9 @@ public class FormAdd extends AppCompatActivity {
                 }
 
                 refDatabase = FirebaseDatabase.getInstance().getReference().child("pescas");
-                Pesca pesca = new Pesca(base64, FormAddTipoPez, FormAddTipoLinea, FormAddTipoCarnada, FormAddDescripcion, lat, lng);
+                FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser() ;
+
+                Pesca pesca = new Pesca(base64, FormAddTipoPez, FormAddTipoLinea, FormAddTipoCarnada, FormAddDescripcion, lat, lng,  currentFirebaseUser.getUid());
                 String key = refDatabase.push().getKey();
                 refDatabase.child(key).setValue(pesca);
 
@@ -87,4 +115,29 @@ public class FormAdd extends AppCompatActivity {
             }
         }
     }
+
+
+    private final LocationListener mLocationListener = new LocationListener() {
+        @Override
+        public void onLocationChanged(final Location location) {
+            //your code here
+            globallocation=location;
+
+        }
+
+        @Override
+        public void onStatusChanged(String provider, int status, Bundle extras) {
+
+        }
+
+        @Override
+        public void onProviderEnabled(String provider) {
+
+        }
+
+        @Override
+        public void onProviderDisabled(String provider) {
+
+        }
+    };
 }
