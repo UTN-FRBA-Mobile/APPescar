@@ -8,6 +8,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -31,6 +32,7 @@ import java.util.Date;
 public class FormAdd extends AppCompatActivity {
 
     private static final int PICK_IMAGE = 1;
+    private static final int CAMERA_PIC_REQUEST = 2;
     public DatabaseReference refDatabase;
     private LocationManager mLocationManager;
     private Location globallocation;
@@ -51,6 +53,16 @@ public class FormAdd extends AppCompatActivity {
                 intent.setType("image/*");
                 intent.setAction(Intent.ACTION_GET_CONTENT);
                 startActivityForResult(Intent.createChooser(intent, "@string/pick_photo"), PICK_IMAGE);
+            }
+        });
+
+        Button cameraImagenButton = (Button) findViewById(R.id.cameraImageButton);
+        cameraImagenButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(cameraIntent, CAMERA_PIC_REQUEST);
             }
         });
 
@@ -117,6 +129,10 @@ public class FormAdd extends AppCompatActivity {
             } else {
                 // Mostrar error - No se pudo obtener la imagen
             }
+        } else if (requestCode == CAMERA_PIC_REQUEST && resultCode == RESULT_OK) {
+            Bitmap image = (Bitmap) data.getExtras().get("data");
+            ImageView imageview = (ImageView) findViewById(R.id.imageUploadPreview);
+            imageview.setImageBitmap(image);
         }
     }
 
