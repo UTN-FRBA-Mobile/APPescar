@@ -44,11 +44,15 @@
         <activity
             android:name=".FormAdd"
             android:label="@string/title_activity_form_add2"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".DetallesPesca"
             android:label="@string/title_activity_detalles_pesca"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".MisPescasActivity"
+            android:label="@string/title_activity_mis_pescas"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

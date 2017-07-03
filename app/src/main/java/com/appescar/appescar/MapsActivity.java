@@ -109,10 +109,6 @@ public class MapsActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-                */
                 Intent intent = new Intent(MapsActivity.this, FormAdd.class);
                 startActivity(intent);
             }
@@ -124,10 +120,48 @@ public class MapsActivity extends AppCompatActivity
                 MapsActivity.this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
-/*
+
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+/*
+        TextView tv = (TextView) findViewById(R.id.usuariologueado);
+        if (auth.getCurrentUser() != null) {
+            tv.setText(auth.getCurrentUser().getEmail());
+        } else {
+            tv.setText("Invitado");
+        }
 */
+
+        drawer.addDrawerListener(new DrawerLayout.DrawerListener() {
+
+            @Override
+            public void onDrawerSlide(View drawerView, float slideOffset) {
+                //Called when a drawer's position changes.
+            }
+
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                FirebaseAuth auth = FirebaseAuth.getInstance();
+                TextView tv = (TextView) findViewById(R.id.usuariologueado);
+                if (auth.getCurrentUser() != null) {
+                    tv.setText(auth.getCurrentUser().getEmail());
+                } else {
+                    tv.setText("Invitado");
+                }
+            }
+
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                // Called when a drawer has settled in a completely closed state.
+            }
+
+            @Override
+            public void onDrawerStateChanged(int newState) {
+                // Called when the drawer motion state changes. The new state will be one of STATE_IDLE, STATE_DRAGGING or STATE_SETTLING.
+            }
+        });
+
+
         refDatabase = FirebaseDatabase.getInstance().getReference().child("pescas");
     }
 
@@ -182,38 +216,21 @@ public class MapsActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        Fragment fragment = null;
-        Boolean FragmentoSeleccionado=false;
+        if (id == R.id.nav_mis_pescas) {
+
+            Intent intent = new Intent(this, MisPescasActivity.class);
+            startActivity(intent);
+
+        } else if (id == R.id.nav_login) {
 
 
-
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-
-            //fragment = new MapaFragment();
-            //FragmentoSeleccionado=true;
-
-        } else if (id == R.id.nav_gallery) {
-
-            //fragment = new MisPescasFragment();
-            //FragmentoSeleccionado=true;
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
-        }
-
-        if (FragmentoSeleccionado) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.Contenedor, fragment).commit();
+        } else if (id == R.id.nav_logout) {
+        } else if (id == R.id.nav_config) {
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
+
         return true;
     }
 

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:padding="5dip"
+    android:orientation="vertical">
+
+
+    <!--  ListRow Left sied Thumbnail image -->
+    <LinearLayout android:id="@+id/lv_thumbnail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="3dip"
+        android:layout_alignParentLeft="true"
+        android:layout_marginRight="5dip">
+
+        <ImageView
+            android:id="@+id/lv_list_image"
+            android:layout_width="50dip"
+            android:layout_height="50dip"
+            android:src="@mipmap/ic_launcher"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/lv_fish"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:text="Pescado"
+        />
+
+    <TextView
+        android:id="@+id/lv_bait"
+        android:text="Carnada"
+        android:layout_marginTop="1dip"
+        android:textSize="20sp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <TextView
+        android:id="@+id/lv_line"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:text="Linea"
+        />
+
+
+    <TextView
+        android:id="@+id/lv_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:text="Descripción"
+        />
+
+
+</LinearLayout>
