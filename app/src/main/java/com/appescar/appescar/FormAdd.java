@@ -33,6 +33,7 @@ public class FormAdd extends AppCompatActivity {
 
     private static final int PICK_IMAGE = 1;
     private static final int CAMERA_PIC_REQUEST = 2;
+    private static final int DEFAULT_WIDTH = 800;
     public DatabaseReference refDatabase;
     private LocationManager mLocationManager;
     private Location globallocation;
@@ -131,11 +132,21 @@ public class FormAdd extends AppCompatActivity {
             }
         } else if (requestCode == CAMERA_PIC_REQUEST && resultCode == RESULT_OK) {
             Bitmap image = (Bitmap) data.getExtras().get("data");
+            Bitmap resizedImage = getResizedBitmap(image);
             ImageView imageview = (ImageView) findViewById(R.id.imageUploadPreview);
-            imageview.setImageBitmap(image);
+            imageview.setImageBitmap(resizedImage);
         }
     }
 
+    public Bitmap getResizedBitmap(Bitmap image) {
+        int width = image.getWidth();
+        int height = image.getHeight();
+
+        int newWidth = DEFAULT_WIDTH;
+        int newHeight = (int)(height * newWidth / width);
+
+        return Bitmap.createScaledBitmap(image, newWidth, newHeight, false);
+    }
 
     private final LocationListener mLocationListener = new LocationListener() {
         @Override
