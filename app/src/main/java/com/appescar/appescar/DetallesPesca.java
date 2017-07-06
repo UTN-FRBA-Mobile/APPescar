@@ -51,6 +51,12 @@ public class DetallesPesca extends AppCompatActivity {
             e.printStackTrace();
         }
         image.setImageBitmap(bitmap);
+        image.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v) {
+                Intent intent = new Intent(DetallesPesca.this, FullPicActivity.class);
+                startActivity(intent);
+            }
+        });
 
     }
 

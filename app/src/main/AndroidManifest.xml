@@ -53,6 +53,8 @@
             android:name=".MisPescasActivity"
             android:label="@string/title_activity_mis_pescas"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".FullPicActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>
