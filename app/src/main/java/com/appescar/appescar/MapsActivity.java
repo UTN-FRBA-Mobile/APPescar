@@ -272,9 +272,9 @@ public class MapsActivity extends AppCompatActivity
 
                 Pesca pesca = markers.get(marker.getSnippet());
 
-                byte[] decoded = Base64.decode(pesca.getImg(), Base64.DEFAULT);
+                /*byte[] decoded = Base64.decode(pesca.getImg(), Base64.DEFAULT);
                 Bitmap decodedByte = BitmapFactory.decodeByteArray(decoded, 0, decoded.length);
-                catchPic.setImageBitmap(decodedByte);
+                catchPic.setImageBitmap(decodedByte);*/
                 fish.setText(marker.getTitle());
                 bait.setText(getString(R.string.carnada, pesca.getBait()));
                 line.setText(getString(R.string.linea, pesca.getLine()));
@@ -293,21 +293,7 @@ public class MapsActivity extends AppCompatActivity
                 intent.putExtra("line",pesca.getLine());
                 intent.putExtra("bait",pesca.getBait());
                 intent.putExtra("tst",pesca.getTst());
-
-                byte[] decoded = Base64.decode(pesca.getImg(), Base64.DEFAULT);
-                Bitmap decodedByte = BitmapFactory.decodeByteArray(decoded, 0, decoded.length);
-                String fileName = "myImage";//no .png or .jpg needed
-                try {
-                    ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-                    decodedByte.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-                    FileOutputStream fo = openFileOutput(fileName, Context.MODE_PRIVATE);
-                    fo.write(bytes.toByteArray());
-                    // remember close file output
-                    fo.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                intent.putExtra("img",fileName);
+                intent.putExtra("imgname",pesca.getImgname());
                 intent.putExtra("description",pesca.getDescription());
                 startActivity(intent);
             }

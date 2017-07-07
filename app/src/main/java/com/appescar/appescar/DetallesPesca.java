@@ -14,6 +14,11 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.firebase.ui.storage.images.FirebaseImageLoader;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
 import java.io.FileNotFoundException;
 
 public class DetallesPesca extends AppCompatActivity {
@@ -25,7 +30,7 @@ public class DetallesPesca extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        Intent intent = getIntent();
+        final Intent intent = getIntent();
 
         TextView name = (TextView) findViewById(R.id.DETAILS_name);
         String fish = intent.getStringExtra("fish");
@@ -44,17 +49,30 @@ public class DetallesPesca extends AppCompatActivity {
         timestamp.setText(intent.getStringExtra("tst"));
 
         ImageView image = (ImageView) findViewById(R.id.DETAILS_img);
-        Bitmap bitmap = null;
-        try {
-            bitmap = BitmapFactory.decodeStream(this.openFileInput("myImage"));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+
+
+        String imgname = intent.getStringExtra("imgname");
+
+        if (imgname!="") {
+
+            FirebaseStorage storage = FirebaseStorage.getInstance();
+            StorageReference storageRef = storage.getReferenceFromUrl("gs://apppescar-e204f.appspot.com/");
+            StorageReference imgRef = storageRef.child("pescas/"+imgname+".png");
+
+
+            Glide.with(getApplicationContext())
+                    .using(new FirebaseImageLoader())
+                    .load(imgRef)
+                    .into(image);
+
         }
-        image.setImageBitmap(bitmap);
+
+
         image.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v) {
-                Intent intent = new Intent(DetallesPesca.this, FullPicActivity.class);
-                startActivity(intent);
+                Intent intentimg = new Intent(DetallesPesca.this, FullPicActivity.class);
+                intentimg.putExtra("imgname",intent.getStringExtra("imgname"));
+                startActivity(intentimg);
             }
         });
 

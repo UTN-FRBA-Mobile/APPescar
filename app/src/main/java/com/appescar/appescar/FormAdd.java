@@ -23,6 +23,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
@@ -96,24 +98,36 @@ public class FormAdd extends AppCompatActivity {
                 Double lat = globallocation.getLatitude();
                 Double lng = globallocation.getLongitude();
 
+                byte[] image = null;
+
                 if (imageUploadPreview != null && imageUploadPreview.getDrawable() != null) {
                     Bitmap bitmap = ((BitmapDrawable) imageUploadPreview.getDrawable()).getBitmap();
                     if (bitmap != null) {
                         ByteArrayOutputStream stream = new ByteArrayOutputStream();
                         bitmap.compress(Bitmap.CompressFormat.PNG, 90, stream);
-                        byte[] image = stream.toByteArray();
-                        base64 = Base64.encodeToString(image, 0);
+                        image = stream.toByteArray();
                     }
                 }
 
                 refDatabase = FirebaseDatabase.getInstance().getReference().child("pescas");
                 FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser() ;
 
-                Pesca pesca = new Pesca(base64, FormAddTipoPez, FormAddTipoLinea,
-                                        FormAddTipoCarnada, FormAddDescripcion, lat, lng,
-                                        currentFirebaseUser.getUid(), new SimpleDateFormat("yyyy.MM.dd HH.mm.ss").format(new Date()) );
                 String key = refDatabase.push().getKey();
+
+                Pesca pesca = new Pesca(FormAddTipoPez, FormAddTipoLinea,
+                        FormAddTipoCarnada, FormAddDescripcion, lat, lng,
+                        currentFirebaseUser.getUid(), new SimpleDateFormat("yyyy.MM.dd HH.mm.ss").format(new Date()),
+                        key);
+
                 refDatabase.child(key).setValue(pesca);
+
+
+                FirebaseStorage storage = FirebaseStorage.getInstance();
+                StorageReference storageRef = storage.getReferenceFromUrl("gs://apppescar-e204f.appspot.com/");
+                StorageReference imgRef = storageRef.child("pescas/"+key+".png");
+
+                imgRef.putBytes(image);
+
 
                 finish();
             }

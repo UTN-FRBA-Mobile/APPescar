@@ -17,11 +17,15 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.firebase.ui.database.FirebaseListAdapter;
+import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
@@ -65,10 +69,16 @@ public class MisPescasActivity extends AppCompatActivity {
                 tst.setText(pesca.getTst());
 
 
-                byte[] decoded = Base64.decode(pesca.getImg(), Base64.DEFAULT);
-                Bitmap decodedByte = BitmapFactory.decodeByteArray(decoded, 0, decoded.length);
+                String key = pesca.getImgname();
 
-                img.setImageBitmap(decodedByte);
+                FirebaseStorage storage = FirebaseStorage.getInstance();
+                StorageReference storageRef = storage.getReferenceFromUrl("gs://apppescar-e204f.appspot.com/");
+                StorageReference imgRef = storageRef.child("pescas/"+key+".png");
+
+                Glide.with(getApplicationContext())
+                        .using(new FirebaseImageLoader())
+                        .load(imgRef)
+                        .into(img);
 
             }
 
@@ -87,22 +97,8 @@ public class MisPescasActivity extends AppCompatActivity {
                 intent.putExtra("fish",pesca.getFish());
                 intent.putExtra("line",pesca.getLine());
                 intent.putExtra("bait",pesca.getBait());
+                intent.putExtra("imgname",pesca.getImgname());
                 intent.putExtra("tst",pesca.getTst());
-
-                byte[] decoded = Base64.decode(pesca.getImg(), Base64.DEFAULT);
-                Bitmap decodedByte = BitmapFactory.decodeByteArray(decoded, 0, decoded.length);
-                String fileName = "myImage";//no .png or .jpg needed
-                try {
-                    ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-                    decodedByte.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-                    FileOutputStream fo = openFileOutput(fileName, Context.MODE_PRIVATE);
-                    fo.write(bytes.toByteArray());
-                    // remember close file output
-                    fo.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                intent.putExtra("img",fileName);
                 intent.putExtra("description",pesca.getDescription());
                 startActivity(intent);
 

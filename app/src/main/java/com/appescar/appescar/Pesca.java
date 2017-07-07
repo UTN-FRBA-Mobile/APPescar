@@ -5,7 +5,6 @@ package com.appescar.appescar;
  */
 
 public class Pesca {
-    public String img = "";
     public String fish = "";
     public String line = "";
     public String bait = "";
@@ -14,13 +13,13 @@ public class Pesca {
     public Double lng = new Double("0");
     public String uid = "";
     public String tst = "";
+    public String imgname = "";
 
     //Contructor default para deserealizar
     public Pesca() {
     }
 
-    public Pesca(String img, String fish, String line, String bait, String description, Double lat, Double lng, String uid, String tst ) {
-        this.img = img;
+    public Pesca(String fish, String line, String bait, String description, Double lat, Double lng, String uid, String tst, String imgname ) {
         this.fish = fish;
         this.line = line;
         this.bait = bait;
@@ -29,10 +28,7 @@ public class Pesca {
         this.lng = lng;
         this.uid = uid;
         this.tst = tst;
-    }
-
-    public String getImg() {
-        return img;
+        this.imgname = imgname;
     }
 
     public String getFish() {
@@ -62,4 +58,6 @@ public class Pesca {
     public String getUid() { return uid; }
 
     public String getTst() { return tst; }
+
+    public String getImgname() { return imgname; }
 }
