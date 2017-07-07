@@ -13,6 +13,7 @@ import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.location.LocationListener;
 import android.support.annotation.NonNull;
+import android.support.annotation.VisibleForTesting;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
@@ -32,7 +33,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.model.GlideUrl;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.firebase.ui.auth.AuthUI;
+import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -49,6 +56,9 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -261,7 +271,7 @@ public class MapsActivity extends AppCompatActivity
             }
 
             @Override
-            public View getInfoContents(Marker marker) {
+            public View getInfoContents(final Marker marker) {
                 View v = getLayoutInflater().inflate(R.layout.info_window, null);
 
                 ImageView catchPic = (ImageView) v.findViewById(R.id.catch_pic);
@@ -272,9 +282,31 @@ public class MapsActivity extends AppCompatActivity
 
                 Pesca pesca = markers.get(marker.getSnippet());
 
-                /*byte[] decoded = Base64.decode(pesca.getImg(), Base64.DEFAULT);
-                Bitmap decodedByte = BitmapFactory.decodeByteArray(decoded, 0, decoded.length);
-                catchPic.setImageBitmap(decodedByte);*/
+                FirebaseStorage storage = FirebaseStorage.getInstance();
+                StorageReference storageRef = storage.getReferenceFromUrl("gs://apppescar-e204f.appspot.com/");
+                StorageReference imgRef = storageRef.child("pescas/"+pesca.getImgname()+".png");
+
+
+
+
+                Glide.with(getApplicationContext())
+                        .using(new FirebaseImageLoader())
+                        .load(imgRef)
+                        .listener(new RequestListener<StorageReference, GlideDrawable>() {
+                            @Override
+                            public boolean onException(Exception e, StorageReference model, Target<GlideDrawable> target, boolean isFirstResource) {
+                                return false;
+                            }
+
+                            @Override
+                            public boolean onResourceReady(GlideDrawable resource, StorageReference model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                                if(!isFromMemoryCache) marker.showInfoWindow();
+                                return false;
+                            }
+                        })
+                        .into(catchPic);
+
+
                 fish.setText(marker.getTitle());
                 bait.setText(getString(R.string.carnada, pesca.getBait()));
                 line.setText(getString(R.string.linea, pesca.getLine()));
