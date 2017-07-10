@@ -57,6 +57,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -69,7 +70,9 @@ import com.squareup.picasso.Picasso;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 
 public class MapsActivity extends AppCompatActivity
@@ -83,6 +86,7 @@ public class MapsActivity extends AppCompatActivity
     private GoogleMap mMap;
 
     private DatabaseReference refDatabase;
+    private DatabaseReference refUbicaciones;
 
     private boolean mPermissionDenied = false;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
@@ -117,10 +121,6 @@ public class MapsActivity extends AppCompatActivity
                                     )).build(),
                     RC_SIGN_IN);
 
-          /*  startActivityForResult(
-                    // Get an instance of AuthUI based on the default app
-                    AuthUI.getInstance().createSignInIntentBuilder().build(),
-                    RC_SIGN_IN); */
         }
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -128,6 +128,9 @@ public class MapsActivity extends AppCompatActivity
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MapsActivity.this, FormAdd.class);
+
+                intent.putExtra("lat",mMap.getCameraPosition().target.latitude);
+                intent.putExtra("lng",mMap.getCameraPosition().target.longitude);
                 startActivity(intent);
             }
         });
@@ -161,14 +164,7 @@ public class MapsActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-/*
-        TextView tv = (TextView) findViewById(R.id.usuariologueado);
-        if (auth.getCurrentUser() != null) {
-            tv.setText(auth.getCurrentUser().getEmail());
-        } else {
-            tv.setText("Invitado");
-        }
-*/
+
 
         drawer.addDrawerListener(new DrawerLayout.DrawerListener() {
 
@@ -181,10 +177,20 @@ public class MapsActivity extends AppCompatActivity
             public void onDrawerOpened(View drawerView) {
                 FirebaseAuth auth = FirebaseAuth.getInstance();
                 TextView tv = (TextView) findViewById(R.id.usuariologueado);
+
+                NavigationView navigationView= (NavigationView) findViewById(R.id.nav_view);
+                Menu menuNav=navigationView.getMenu();
+                MenuItem nav_login = menuNav.findItem(R.id.nav_login);
+                MenuItem nav_logout = menuNav.findItem(R.id.nav_logout);
+
                 if (auth.getCurrentUser() != null) {
                     tv.setText(auth.getCurrentUser().getEmail());
+                    nav_login.setVisible(false);
+                    nav_logout.setVisible(true);
                 } else {
                     tv.setText("Invitado");
+                    nav_login.setVisible(true);
+                    nav_logout.setVisible(false);
                 }
             }
 
@@ -261,9 +267,38 @@ public class MapsActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_login) {
 
+            startActivityForResult(
+                    AuthUI.getInstance()
+                            .createSignInIntentBuilder()
+                            .setProviders(Arrays.asList(
+                                    new AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build()
+                            )).build(),
+                    RC_SIGN_IN);
 
         } else if (id == R.id.nav_logout) {
+
+            AuthUI.getInstance()
+                    .signOut(this)
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        public void onComplete(@NonNull Task<Void> task) {
+                            // user is now signed out
+                            // startActivity(new Intent(MyActivity.this, SignInActivity.class));
+                            // finish();
+                        }
+                    });
+
         } else if (id == R.id.nav_config) {
+
+            refUbicaciones = FirebaseDatabase.getInstance().getReference().child("ubicaciones");
+            FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser() ;
+
+            String key = refUbicaciones.push().getKey();
+
+            Ubicacion ubicacion = new Ubicacion(mMap.getCameraPosition().target.latitude,mMap.getCameraPosition().target.longitude,currentFirebaseUser.getUid() );
+            refDatabase.child(key).setValue(ubicacion);
+
+            this.displayMessage("Ubicación Guardada");
+
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

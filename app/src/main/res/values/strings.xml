@@ -18,6 +18,7 @@
     <string name="tipopez_seleccionar">Tipo de Pez</string>
     <string name="tipolinea_seleccionar">Tipo de Linea</string>
     <string name="tipocarnada_seleccionar">Tipo de Carnada</string>
+    <string name="tipoubicacion_seleccionar">Ubicación de Pesca</string>
 
     <string name="tipocarnada1">Viva</string>
     <string name="tipocarnada2">Masa</string>
@@ -74,5 +75,7 @@
     <string name="title_activity_detalles_pesca">Informacion de la Pesca</string>
     <string name="title_activity_mis_pescas">MisPescasActivity</string>
     <string name="large_text">1</string>
+
+    <string name="ubicacion">Ubicación</string>
 
 </resources>

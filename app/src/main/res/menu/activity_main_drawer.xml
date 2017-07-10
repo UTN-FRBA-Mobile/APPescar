@@ -13,7 +13,7 @@
             android:title="Mis Pescas" />
         <item
             android:id="@+id/nav_config"
-            android:title="Configuración" />
+            android:title="Guardar Ubicación Favorita" />
     </group>
 
 

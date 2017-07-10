@@ -46,4 +46,9 @@
         <item>@string/tipocarnada3</item>
         <item>@string/tipocarnada4</item>
     </string-array>
+
+    <string-array name="tipoubicacionlist">
+        <item>Vista Mapa Actual</item>
+        <item>Ubicación Actual</item>
+    </string-array>
 </resources>
