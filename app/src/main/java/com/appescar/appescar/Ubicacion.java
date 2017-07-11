@@ -8,15 +8,13 @@ public class Ubicacion {
 
     public Double lat = new Double("0");
     public Double lng = new Double("0");
-    public String uid = "";
 
     public Ubicacion() {
     }
 
-    public Ubicacion(Double lat, Double lng, String uid)  {
+    public Ubicacion(Double lat, Double lng)  {
         this.lat=lat;
         this.lng=lng;
-        this.uid=uid;
     }
 
     public Double getLat() {
@@ -27,8 +25,5 @@ public class Ubicacion {
         return lng;
     }
 
-    public String getUid() {
-        return uid;
-    }
 
 }

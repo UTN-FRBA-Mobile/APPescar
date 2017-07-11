@@ -40,6 +40,9 @@ import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.firebase.ui.auth.AuthUI;
+import com.firebase.ui.auth.ErrorCodes;
+import com.firebase.ui.auth.IdpResponse;
+import com.firebase.ui.auth.ResultCodes;
 import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
@@ -63,6 +66,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
@@ -91,6 +95,8 @@ public class MapsActivity extends AppCompatActivity
     private boolean mPermissionDenied = false;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     private static final int RC_SIGN_IN = 200;
+
+    final HashMap<String, Pesca> markers = new HashMap<>();
 
     int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
 
@@ -182,15 +188,21 @@ public class MapsActivity extends AppCompatActivity
                 Menu menuNav=navigationView.getMenu();
                 MenuItem nav_login = menuNav.findItem(R.id.nav_login);
                 MenuItem nav_logout = menuNav.findItem(R.id.nav_logout);
+                MenuItem nav_config = menuNav.findItem(R.id.nav_config);
+                MenuItem nav_mis_pescas = menuNav.findItem(R.id.nav_mis_pescas);
 
                 if (auth.getCurrentUser() != null) {
                     tv.setText(auth.getCurrentUser().getEmail());
                     nav_login.setVisible(false);
                     nav_logout.setVisible(true);
+                    nav_mis_pescas.setVisible(true);
+                    nav_config.setVisible(true);
                 } else {
                     tv.setText("Invitado");
                     nav_login.setVisible(true);
                     nav_logout.setVisible(false);
+                    nav_mis_pescas.setVisible(false);
+                    nav_config.setVisible(false);
                 }
             }
 
@@ -292,10 +304,8 @@ public class MapsActivity extends AppCompatActivity
             refUbicaciones = FirebaseDatabase.getInstance().getReference().child("ubicaciones");
             FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser() ;
 
-            String key = refUbicaciones.push().getKey();
-
-            Ubicacion ubicacion = new Ubicacion(mMap.getCameraPosition().target.latitude,mMap.getCameraPosition().target.longitude,currentFirebaseUser.getUid() );
-            refDatabase.child(key).setValue(ubicacion);
+            Ubicacion ubicacion = new Ubicacion(mMap.getCameraPosition().target.latitude,mMap.getCameraPosition().target.longitude );
+            refUbicaciones.child(currentFirebaseUser.getUid()).setValue(ubicacion);
 
             this.displayMessage("Ubicación Guardada");
 
@@ -320,12 +330,11 @@ public class MapsActivity extends AppCompatActivity
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        final HashMap<String, Pesca> markers = new HashMap<>();
 
         mMap.setOnMyLocationButtonClickListener(this);
         enableMyLocation();
 
-        LatLng chascomus = new LatLng(-35.582637,-58.062126);
+        //LatLng chascomus = new LatLng(-35.582637,-58.062126);
 
         mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter(){
             @Override
@@ -394,6 +403,43 @@ public class MapsActivity extends AppCompatActivity
             }
         });
 
+        this.GeneraMarcadores();
+        this.GeneraUbicacionFavorita();
+
+        //mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(chascomus, 15.0f));
+    }
+
+
+    private void GeneraUbicacionFavorita() {
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+
+        ValueEventListener ubiListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Ubicacion ubicacion = dataSnapshot.getValue(Ubicacion.class);
+
+                if (ubicacion!=null) {
+                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(ubicacion.lat, ubicacion.lng), 15.0f));
+                } else {
+                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(-35.582637,-58.062126), 15.0f));
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Getting Post failed, log a message
+                Log.w("D", "Ubicacion Favorita Cancelo", databaseError.toException());
+            }
+        };
+
+        if (auth.getCurrentUser()!=null) {
+            refUbicaciones = FirebaseDatabase.getInstance().getReference().child("ubicaciones");
+            refUbicaciones.child(auth.getCurrentUser().getUid()).addValueEventListener(ubiListener);
+        }
+
+    }
+
+    private void GeneraMarcadores() {
         refDatabase.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(final DataSnapshot dataSnapshot, String prevChildKey) {
@@ -421,9 +467,6 @@ public class MapsActivity extends AppCompatActivity
             @Override
             public void onCancelled(DatabaseError databaseError) {}
         });
-
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(chascomus, 15.0f));
-
     }
 
     /**
@@ -518,14 +561,49 @@ public class MapsActivity extends AppCompatActivity
 
                 mMap.animateCamera(location);
             } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
-  //              Status status = PlaceAutocomplete.getStatus(this, data);
+                //              Status status = PlaceAutocomplete.getStatus(this, data);
                 // TODO: Handle the error.
-    //            Log.i(TAG, status.getStatusMessage());
+                //            Log.i(TAG, status.getStatusMessage());
 
             } else if (resultCode == RESULT_CANCELED) {
                 // The user canceled the operation.
             }
         }
+
+
+
+        if (requestCode == RC_SIGN_IN) {
+            IdpResponse response = IdpResponse.fromResultIntent(data);
+
+            // Successfully signed in
+            if (resultCode == ResultCodes.OK) {
+                refDatabase = FirebaseDatabase.getInstance().getReference().child("pescas");
+
+                this.GeneraMarcadores();
+                this.GeneraUbicacionFavorita();
+            } else {
+                // Sign in failed
+                if (response == null) {
+                    // User pressed back button
+                    this.displayMessage("Fallo Login");
+                    return;
+                }
+
+                if (response.getErrorCode() == ErrorCodes.NO_NETWORK) {
+                    this.displayMessage("No hay Red para loguearse");
+                    return;
+                }
+
+                if (response.getErrorCode() == ErrorCodes.UNKNOWN_ERROR) {
+                    this.displayMessage("Error desconocido al loguearse");
+                    return;
+                }
+            }
+
+
+        }
+
+
     }
 
 
