@@ -26,3 +26,7 @@ Además, es importante recalcar que el usuario debe utilizar un login para acced
 ![Marcador de Pesca](https://github.com/UTN-FRBA-Mobile/APPescar/blob/master/screenshots/marcador.png?raw=true)
 ![Mis Pescas](https://github.com/UTN-FRBA-Mobile/APPescar/blob/master/screenshots/mispescas.png?raw=true)
 ![Drawer](https://github.com/UTN-FRBA-Mobile/APPescar/blob/master/screenshots/drawer.png?raw=true)
+![Agregar Pesca](https://github.com/UTN-FRBA-Mobile/APPescar/blob/master/screenshots/nuevapesca.png?raw=true)
+![Detalle Pesca](https://github.com/UTN-FRBA-Mobile/APPescar/blob/master/screenshots/detallepesca.png?raw=true)
+![Foto Pesca](https://github.com/UTN-FRBA-Mobile/APPescar/blob/master/screenshots/fotopesca.png?raw=true)
+
