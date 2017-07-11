@@ -16,3 +16,11 @@ Además, es importante recalcar que el usuario debe utilizar un login para acced
 - Para la vista del mapa:  Herramienta para filtrar los marcadores de acuerdo a diferentes filtros, por ejemplo, especie de peces, pescas de amigos.
 - Visualizar las pescas de los amigos de Facebook 
 - Historial de Pescas: interfaz donde se visualiza en orden las ultimas pescas realizadas.
+
+## Capturas de Pantalla
+
+![Pantalla Principal](https://github.com/UTN-FRBA-Mobile/APPescar/blob/master/screenshots/principal.png?raw=true)
+![Busqueda de Ubicaciones](https://github.com/UTN-FRBA-Mobile/APPescar/blob/master/screenshots/busqueda.png?raw=true)
+![Marcador de Pesca](https://github.com/UTN-FRBA-Mobile/APPescar/blob/master/screenshots/marcador.png?raw=true)
+![Mis Pescas](https://github.com/UTN-FRBA-Mobile/APPescar/blob/master/screenshots/mispescas.png?raw=true)
+![Drawer](https://github.com/UTN-FRBA-Mobile/APPescar/blob/master/screenshots/drawer.png?raw=true)
